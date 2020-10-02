@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-LOCAL_PATH := device/motorola/albus
+DEVICE_PATH := device/motorola/albus
 
 # Architecture
 TARGET_ARCH := arm64
@@ -45,9 +45,9 @@ BOARD_KERNEL_BASE := 0x80000000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_TAGS_OFFSET := 0x00000100
 BOARD_RAMDISK_OFFSET := 0x01000000
-BOARD_MKBOOTIMG_ARGS :=  --ramdisk_offset 0x01000000 --tags_offset 0x00000100 --kernel_offset 0x00008000 --dt device/motorola/albus/dt.img
-BOARD_CUSTOM_BOOTIMG_MK := device/motorola/albus/mkbootimg.mk
-TARGET_PREBUILT_KERNEL := device/motorola/albus/kernel
+BOARD_MKBOOTIMG_ARGS :=  --ramdisk_offset 0x01000000 --tags_offset 0x00000100 --kernel_offset 0x00008000 --dt $(DEVICE_PATH)/prebuilt/dt.img
+BOARD_CUSTOM_BOOTIMG_MK := $(DEVICE_PATH)/mkbootimg.mk
+TARGET_PREBUILT_KERNEL :=$(DEVICE_PATH)/prebuilt/kernel
 
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 131072                  # (BOARD_KERNEL_PAGESIZE * 64)
@@ -64,24 +64,22 @@ BOARD_HAS_LARGE_FILESYSTEM := true
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
-# Recovery
-TARGET_RECOVERY_FSTAB := device/motorola/albus/twrp.fstab
-BOARD_SUPPRESS_SECURE_ERASE := true
-
 # TWRP Configuration
 TW_THEME := portrait_hdpi
 TW_MAX_BRIGHTNESS := 255
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TW_SCREEN_BLANK_ON_BOOT := true
+TARGET_RECOVERY_DEVICE_MODULES += android.hardware.boot@1.0 hwservicemanager servicemanager libxml2 keystore libicuuc android.hidl.base@1.0
 TARGET_RECOVERY_QCOM_RTC_FIX := true
 RECOVERY_SDCARD_ON_DATA := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_INCLUDE_NTFS_3G := true
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
-TWRP_INCLUDE_LOGCAT := true
 
-# Encryption
+# Crypto
+PLATFORM_SECURITY_PATCH := 2025-12-31
 TARGET_HW_DISK_ENCRYPTION := true
+TW_INCLUDE_CRYPTO_FBE := true
 TW_INCLUDE_CRYPTO := true
-TARGET_KEYMASTER_WAIT_FOR_QSEE := true
-TW_CRYPTO_USE_SYSTEM_VOLD := qseecomd
+TW_CRYPTO_SYSTEM_VOLD_MOUNT := vendor
+TW_CRYPTO_USE_SYSTEM_VOLD := hwservicemanager servicemanager qseecomd keymaster-3-0
