@@ -28,7 +28,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 # Charger
 PRODUCT_PACKAGES += \
-    charger_res_images
+    charger_res_imagess
 
 ## Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := albus
@@ -36,7 +36,6 @@ PRODUCT_NAME := omni_albus
 PRODUCT_BRAND := motorola
 PRODUCT_MODEL := Moto Z2 Play
 PRODUCT_MANUFACTURER := motorola
-
 
 # PRODUCT_BUILD_PROP_OVERRIDES += \
 #	PRODUCT_NAME=sanders_retail \

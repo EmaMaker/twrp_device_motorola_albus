@@ -55,11 +55,6 @@ service servicemanager /sbin/servicemanager
     seclabel u:r:recovery:s0
     writepid /dev/cpuset/system-background/tasks
 
-service boot-1-0 /sbin/android.hardware.boot@1.0-service
-    user root
-    group root
-    seclabel u:r:recovery:s0
-
 service keymaster-3-0 /sbin/android.hardware.keymaster@3.0-service-qti
     user root
     group root
@@ -97,4 +92,22 @@ service keystore_auth /sbin/keystore_auth
     seclabel u:r:recovery:s0
     
 on property:ro.crypto.fs_crypto_blkdev=/dev/block/dm-0
-    stop sbinqseecomd
+    stop sbinqseecomd    
+
+on boot
+    write /sys/class/android_usb/android0/iSerial ${ro.serialno}
+    write /sys/class/android_usb/android0/iManufacturer ${ro.product.manufacturer}
+    write /sys/class/android_usb/android0/iProduct ${ro.product.model}
+    mkdir /dev/bus 0755 root root
+    mkdir /dev/bus/usb 0755 root root
+    chown system system /sys/class/android_usb/android0/secure
+    chmod 0660 /sys/class/android_usb/android0/secure
+    # Configure BAM2BAM_IPA for RNDIS
+    write /sys/class/android_usb/android0/f_rndis_qc/rndis_transports BAM2BAM_IPA
+    # Disable RNDIS UL aggregation
+    write /sys/class/android_usb/android0/f_rndis_qc/max_pkt_per_xfer 1
+    write /sys/module/g_android/parameters/mtp_rx_req_len 524288
+    write /sys/module/g_android/parameters/mtp_tx_req_len 524288
+
+    chown root system /sys/module/uvcvideo/parameters/quirks
+    chmod 0660 /sys/module/uvcvideo/parameters/quirks
