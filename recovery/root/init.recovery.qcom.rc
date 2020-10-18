@@ -15,7 +15,6 @@ on init
     start hwservicemanager
 
 on boot
-    setprop sys.usb.config adb
     start prepdecrypt
 
 on property:crypto.ready=1
@@ -93,21 +92,3 @@ service keystore_auth /sbin/keystore_auth
     
 on property:ro.crypto.fs_crypto_blkdev=/dev/block/dm-0
     stop sbinqseecomd    
-
-on boot
-    write /sys/class/android_usb/android0/iSerial ${ro.serialno}
-    write /sys/class/android_usb/android0/iManufacturer ${ro.product.manufacturer}
-    write /sys/class/android_usb/android0/iProduct ${ro.product.model}
-    mkdir /dev/bus 0755 root root
-    mkdir /dev/bus/usb 0755 root root
-    chown system system /sys/class/android_usb/android0/secure
-    chmod 0660 /sys/class/android_usb/android0/secure
-    # Configure BAM2BAM_IPA for RNDIS
-    write /sys/class/android_usb/android0/f_rndis_qc/rndis_transports BAM2BAM_IPA
-    # Disable RNDIS UL aggregation
-    write /sys/class/android_usb/android0/f_rndis_qc/max_pkt_per_xfer 1
-    write /sys/module/g_android/parameters/mtp_rx_req_len 524288
-    write /sys/module/g_android/parameters/mtp_tx_req_len 524288
-
-    chown root system /sys/module/uvcvideo/parameters/quirks
-    chmod 0660 /sys/module/uvcvideo/parameters/quirks
