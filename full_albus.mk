@@ -26,11 +26,11 @@ PRODUCT_PACKAGES += \
     libcryptfs_hw
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.hardware.keystore=msm8937
+    ro.hardware.keystore=msm8953
 
 # Device identifier. This must come after all inclusions
-PRODUCT_DEVICE := hannah
-PRODUCT_NAME := full_hannah
+PRODUCT_DEVICE := albus
+PRODUCT_NAME := full_albus
 PRODUCT_BRAND := Motorola
-PRODUCT_MODEL := Moto E5 Plus
+PRODUCT_MODEL := Moto Z2 Play
 PRODUCT_MANUFACTURER := Motorola

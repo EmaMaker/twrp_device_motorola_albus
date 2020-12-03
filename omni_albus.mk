@@ -14,9 +14,9 @@
 # limitations under the License.
 #
 
-$(call inherit-product, device/motorola/hannah/full_hannah.mk)
+$(call inherit-product, device/motorola/albus/full_albus.mk)
 
 # Inherit some common Omni stuff.
 $(call inherit-product, vendor/omni/config/common.mk)
 
-PRODUCT_NAME := omni_hannah
+PRODUCT_NAME := omni_albus
