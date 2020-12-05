@@ -30,7 +30,6 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 PRODUCT_PACKAGES += \
     charger_res_images \
     qcom_decrypt \
-    qcom_decrypt_fbe \
     tzdata_twrp
 
 ## Device identifier. This must come after all inclusions
