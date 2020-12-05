@@ -15,32 +15,6 @@ on init
     mkdir /acct/uid
 
     start hwservicemanager
-
-on boot
-    start prepdecrypt
-
-on property:crypto.ready=1
-    start sbin_qseecomd
-    start servicemanager
-
-    # Wait for qseecomd to finish
-    wait_for_prop sys.listeners.registered true
-
-    start gatekeeper-1-0
-    start keymaster-3-0
-
-on property:crypto.ready=0
-    stop keymaster-3-0
-    stop gatekeeper-1-0
-    stop servicemanager
-    stop sbin_qseecomd
-
-service sbin_qseecomd /sbin/qseecomd
-    oneshot
-    disabled
-    user root
-    group root
-    seclabel u:r:recovery:s0
     
 service hwservicemanager /sbin/hwservicemanager
     user root
@@ -56,41 +30,3 @@ service servicemanager /sbin/servicemanager
     seclabel u:r:recovery:s0
     writepid /dev/cpuset/system-background/tasks
 
-service keymaster-3-0 /sbin/android.hardware.keymaster@3.0-service-qti
-    user root
-    group root
-    disabled
-    seclabel u:r:recovery:s0
-
-service gatekeeper-1-0 /sbin/android.hardware.gatekeeper@1.0-service-qti
-    user root
-    group root
-    disabled
-    seclabel u:r:recovery:s0
-
-service prepdecrypt /sbin/prepdecrypt.sh
-    oneshot
-    disabled
-    user root
-    group root
-    seclabel u:r:recovery:s0
-
-# Handled by TWRP
-service keystore /sbin/keystore /tmp/misc/keystore
-    disabled
-    oneshot
-    user root
-    group root drmrpc readproc
-    seclabel u:r:recovery:s0
-    writepid /dev/cpuset/foreground/tasks
-
-# Handled by TWRP
-service keystore_auth /sbin/keystore_auth
-    disabled
-    oneshot
-    user system
-    group root
-    seclabel u:r:recovery:s0
-    
-on property:ro.crypto.fs_crypto_blkdev=/dev/block/dm-0
-    stop sbin_qseecomd    
